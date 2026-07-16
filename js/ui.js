@@ -1,4 +1,8 @@
-function renderProfile(profile){
+function renderProfile(profile) {
+
+    //==============================
+    // Data Profil
+    //==============================
 
     document.getElementById("nama").textContent =
         profile.Nama;
@@ -9,13 +13,37 @@ function renderProfile(profile){
     document.getElementById("email").textContent =
         profile.Email;
 
+    //-------------------------------------
+    // Website
+
+    let website = String(profile.Website || "").trim();
+
+    // Jika tidak diawali http:// atau https://
+    if (
+        website &&
+        !/^https?:\/\//i.test(website)
+    ) {
+        website = "https://" + website;
+    }
+
+    // Tampilkan tanpa protocol
     document.getElementById("website").textContent =
-        profile.Website;
+        website.replace(/^https?:\/\//i, "");
+
+    // Link website
+    document.getElementById("websiteLink").href =
+        website;
+
+    document.getElementById("websiteLink").target =
+        "_blank";
+
+    document.getElementById("websiteLink").rel =
+        "noopener noreferrer";
 
     //-------------------------------------
     // Nomor Telepon
 
-    let phone = String(profile["No Telepon"]).trim();
+    let phone = String(profile["No Telepon"] || "").trim();
 
     // Hapus semua karakter selain angka
     phone = phone.replace(/\D/g, "");
@@ -34,18 +62,23 @@ function renderProfile(profile){
         displayPhone = "0" + displayPhone.substring(2);
     }
 
-    document.getElementById("phone").textContent = displayPhone;
+    document.getElementById("phone").textContent =
+        displayPhone;
 
     //-------------------------------------
+    // Link Telepon
 
     document.getElementById("phoneLink").href =
         "tel:+" + whatsappPhone;
 
+    //-------------------------------------
+    // Link Email
+
     document.getElementById("emailLink").href =
         "mailto:" + profile.Email;
 
-    document.getElementById("websiteLink").href =
-        profile.Website;
+    //-------------------------------------
+    // Link WhatsApp
 
     document.getElementById("whatsappLink").href =
         "https://wa.me/" + whatsappPhone;
